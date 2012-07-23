@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #  Builds the hwloc hardware locality libraries.  Should be run from inside the base directory
 #

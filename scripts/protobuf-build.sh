@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #  Builds the Base Google protobuf compiler/libraries which support c++/Java/Python.  
 #  Should be run from the base directory.

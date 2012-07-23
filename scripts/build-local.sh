@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ "${1}" == "" ] && echo "${0} /install/prefix [git user-id|tar]  **Default is to use tar**" && exit 1
 

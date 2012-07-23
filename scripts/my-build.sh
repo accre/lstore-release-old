@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #  Generic build script for Redmine projects.  Should be run from inside the projects base directory
 #

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #  Builds the OpenSSL libraries.  Should be run from the base directory.
 #

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #  Builds the Jerasure Runtime libraries.  Should be run from inside the base directory
 #

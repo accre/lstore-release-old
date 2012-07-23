@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ "${1}" == "" ] && echo "${0} /install/prefix" && exit 1
 

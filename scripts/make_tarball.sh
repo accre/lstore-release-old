@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ "$2" == "" ] && echo "$0 user-id repository-name" && exit 1
 
