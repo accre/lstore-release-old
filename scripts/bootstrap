@@ -8,5 +8,5 @@ d=""
 [ -e CMakeCache.txt ] && rm CMakeCache.txt
 
 CMAKE_PREFIX_PATH=${PREFIX}${d} \
-   cmake ${cmflags}  -D CMAKE_INSTALL_PREFIX=/workspace/test -D CMAKE_INCLUDE_CURRENT_DIR=on -D CMAKE_VERBOSE_MAKEFILE=on CMakeLists.txt
+   cmake ${cmflags}  -D CMAKE_INSTALL_PREFIX=${PREFIX}${d} -D CMAKE_INCLUDE_CURRENT_DIR=on -D CMAKE_VERBOSE_MAKEFILE=on CMakeLists.txt
 
