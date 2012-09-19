@@ -51,7 +51,7 @@ cd ..
 
 #Make ZeroMQ
 [ -d zeromq-[0-9]* ] || tar -zxvf ../tarballs/zeromq-[0-9]*.tar.gz
-cd zermomq-[0-9]*
+cd zeromq-[0-9]*
 ../../scripts/zeromq-build.sh 2>&1 | tee ../../logs/zeromq-build.log
 cd ..
 
