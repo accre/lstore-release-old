@@ -10,6 +10,6 @@ d=""
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
 ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared --with-libzmq=${PREFIX} 
-make
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS install
 

@@ -13,7 +13,7 @@ d=""
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
 ./configure --prefix=${PREFIX}${d} --disable-shared
-make
-make check
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS check
+make $MAKE_ARGS install
 

@@ -15,6 +15,6 @@ d=""
 CXXFLAGS="-I${PREFIX}${d}/include" \
 LDFLAGS="-L${PREFIX}${d}/lib -lpthread" \
 ./configure --prefix=${PREFIX}${d} --disable-shared
-make
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS install
 

@@ -8,7 +8,7 @@ d=""
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
 ./configure --prefix=${PREFIX}${d} --with-apr=${PREFIX}${d} --enable-shared --enable-static
-make
-make test
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS test
+make $MAKE_ARGS install
 

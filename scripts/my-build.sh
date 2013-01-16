@@ -9,6 +9,6 @@ d=""
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
 ../../scripts/bootstrap
-make
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS install
 

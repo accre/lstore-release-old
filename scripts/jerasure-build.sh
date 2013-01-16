@@ -10,6 +10,6 @@ d=""
 
 ./bootstrap ${1}
 
-make
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS install
 

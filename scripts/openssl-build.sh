@@ -14,7 +14,7 @@ target=""
 
 ./config ${target} threads no-shared --prefix=${PREFIX}${d}
 
-make
-make test
-make install
+make $MAKE_ARGS
+make $MAKE_ARGS test
+make $MAKE_ARGS install
 

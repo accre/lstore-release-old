@@ -3,6 +3,7 @@
 [ "${1}" == "" ] && echo "${0} /install/prefix" && exit 1
 
 export PREFIX=${1}
+export MAKE_ARGS="-j 10"
 
 cd build
 
