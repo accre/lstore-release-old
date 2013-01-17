@@ -57,7 +57,7 @@ cd zeromq-[0-9]*
 cd ..
 
 #Make C-ZeroMQ (C-bindings)
-[ -d zeromq-[0-9]* ] || tar -zxvf ../tarballs/czmq-[0-9]*.tar.gz
+[ -d czmq-[0-9]* ] || tar -zxvf ../tarballs/czmq-[0-9]*.tar.gz
 cd czmq-[0-9]*
 ../../scripts/czmq-build.sh 2>&1 | tee ../../logs/czmq-build.log
 cd ..
