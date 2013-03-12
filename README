@@ -26,6 +26,8 @@ Building the external packages
 All the external dependencies can be built using:
     ./scripts/build-external.sh /path/to/install/files
 
+(note: install path must be absolute)
+
 This script (and most of the others as well) are designed to be run from the base
 and will fail if run from somewhere else.  The exception to this rule are the scripts/*-build.sh
 used for each package.  These are all designed to be run from withing the package
