@@ -8,7 +8,11 @@ d=""
 
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
-../../scripts/bootstrap
+#Make the bootstrap
+cat ../../scripts/bootstrap | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > bootstrap
+chmod +x bootstrap
+
+./bootstrap
 make $MAKE_ARGS
 make $MAKE_ARGS install
 

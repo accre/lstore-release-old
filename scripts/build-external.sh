@@ -8,58 +8,77 @@ export MAKE_ARGS="-j 10"
 cd build
 
 #Make APR
-[ -d apr-[0-9]* ] || tar -zxvf ../tarballs/apr-[0-9]*.gz
+[ -d apr-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/apr-[0-9]*.gz
 cd apr-[0-9]*
-../../scripts/apr-build.sh 2>&1 | tee ../../logs/apr-build.log
+#../../scripts/apr-build.sh 2>&1 | tee ../../logs/apr-build.log
+cat ../../scripts/apr-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/apr-build.log
 cd ..
 
 #Make APR-Util
-[ -d apr-util-[0-9]* ] || tar -zxvf ../tarballs/apr-util-[0-9]*.gz
+[ -d apr-util-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/apr-util-[0-9]*.gz
 cd apr-util-[0-9]*
-../../scripts/apr-util-build.sh 2>&1 | tee ../../logs/apr-util-build.log
+cat ../../scripts/apr-util-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/apr-util-build.log
 cd ..
 
 #Make OpenSSL
-[ -d openssl-[0-9]* ] || tar -zxvf ../tarballs/openssl-[0-9]*.gz
+[ -d openssl-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/openssl-[0-9]*.gz
 cd openssl-[0-9]*
-../../scripts/openssl-build.sh 2>&1 | tee ../../logs/openssl-build.log
+cat ../../scripts/openssl-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/openssl-build.log
 cd ..
 
 #Make ProtoBuf compiler
-[ -d protobuf-[0-9]* ] || tar -zxvf ../tarballs/protobuf-[0-9]*.gz
+[ -d protobuf-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/protobuf-[0-9]*.gz
 cd protobuf-[0-9]*
-../../scripts/protobuf-build.sh 2>&1 | tee ../../logs/protobuf-build.log
+cat ../../scripts/protobuf-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/protobuf-build.log
 cd ..
 
 #Make ProtoBuf-C compiler
-#You can ignorethe erros building the examples
-[ -d protobuf-c-[0-9]* ] || tar -zxvf ../tarballs/protobuf-c-[0-9]*.gz
+#You can ignore the errors building the examples
+[ -d protobuf-c-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/protobuf-c-[0-9]*.gz
 cd protobuf-c-[0-9]*
-../../scripts/protobuf-c-build.sh 2>&1 | tee ../../logs/protobuf-c-build.log
+cat ../../scripts/protobuf-c-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/protobuf-c-build.log
 cd ..
 
 #Make HWloc
-[ -d hwloc-[0-9]* ] || tar -zxvf ../tarballs/hwloc-[0-9]*.gz
+[ -d hwloc-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/hwloc-[0-9]*.gz
 cd hwloc-[0-9]*
-../../scripts/hwloc-build.sh 2>&1 | tee ../../logs/hwloc-build.log
+cat ../../scripts/hwloc-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/hwloc-build.log
 cd ..
 
 #Make Jeraseure
-[ -d Jerasure-[0-9]* ] || tar -zxvf ../tarballs/Jerasure-[0-9]*.tgz
+[ -d Jerasure-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/Jerasure-[0-9]*.tgz
 cd Jerasure-[0-9]*
-../../scripts/jerasure-build.sh 2>&1 | tee ../../logs/jerasure-build.log
+cat ../../scripts/jerasure-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/jerasure-build.log
 cd ..
 
 #Make ZeroMQ
-[ -d zeromq-[0-9]* ] || tar -zxvf ../tarballs/zeromq-[0-9]*.tar.gz
+[ -d zeromq-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/zeromq-[0-9]*.tar.gz
 cd zeromq-[0-9]*
-../../scripts/zeromq-build.sh 2>&1 | tee ../../logs/zeromq-build.log
+cat ../../scripts/zeromq-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/zeromq-build.log
 cd ..
 
 #Make C-ZeroMQ (C-bindings)
-[ -d czmq-[0-9]* ] || tar -zxvf ../tarballs/czmq-[0-9]*.tar.gz
+[ -d czmq-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/czmq-[0-9]*.tar.gz
 cd czmq-[0-9]*
-../../scripts/czmq-build.sh 2>&1 | tee ../../logs/czmq-build.log
+cat ../../scripts/czmq-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/czmq-build.log
 cd ..
 
 
