@@ -32,23 +32,6 @@ chmod +x my-build.sh
 ./my-build.sh 2>&1 | tee ../../logs/openssl-build.log
 cd ..
 
-#Make ProtoBuf compiler
-[ -d protobuf-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/protobuf-[0-9]*.gz
-cd protobuf-[0-9]*
-cat ../../scripts/protobuf-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
-chmod +x my-build.sh
-./my-build.sh 2>&1 | tee ../../logs/protobuf-build.log
-cd ..
-
-#Make ProtoBuf-C compiler
-#You can ignore the errors building the examples
-[ -d protobuf-c-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/protobuf-c-[0-9]*.gz
-cd protobuf-c-[0-9]*
-cat ../../scripts/protobuf-c-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
-chmod +x my-build.sh
-./my-build.sh 2>&1 | tee ../../logs/protobuf-c-build.log
-cd ..
-
 #Make HWloc
 [ -d hwloc-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/hwloc-[0-9]*.gz
 cd hwloc-[0-9]*
@@ -79,6 +62,14 @@ cd czmq-[0-9]*
 cat ../../scripts/czmq-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
 chmod +x my-build.sh
 ./my-build.sh 2>&1 | tee ../../logs/czmq-build.log
+cd ..
+
+#Make Zlib
+[ -d zlib-[0-9]* ] || tar --no-same-owner --no-same-permissions -zxvf ../tarballs/zlib-[0-9]*.tar.gz
+cd zlib-[0-9]*
+cat ../../scripts/zlib-build.sh | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > my-build.sh
+chmod +x my-build.sh
+./my-build.sh 2>&1 | tee ../../logs/zlib-build.log
 cd ..
 
 
