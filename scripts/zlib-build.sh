@@ -8,7 +8,7 @@ d=""
 
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
-./configure --prefix=${PREFIX}${d} --static
+./configure --prefix=${PREFIX}${d}
 make $MAKE_ARGS
 make $MAKE_ARGS test
 make $MAKE_ARGS install

@@ -59,6 +59,6 @@ make_tarball.sh      - Makes a local project's tarball.  Does a fresh GIT checko
                        a little branch info by creating a HISTORY file.
                        Can be run from anywhere.
 make_all_tarballs.sh - Makes all the local tarballs and places them in the tarballs directory
-                       Can be run from anywhere.
+                       Should be run from the base release directory.
                       
 

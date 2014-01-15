@@ -12,7 +12,7 @@ target=""
 
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
-./config ${target} threads no-shared --prefix=${PREFIX}${d}
+./config ${target} threads shared -fPIC --prefix=${PREFIX}${d}
 
 make $MAKE_ARGS
 make $MAKE_ARGS test
