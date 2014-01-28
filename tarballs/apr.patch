@@ -1,0 +1,185 @@
+diff -rupN apr-1.5.0/include/apr_network_io.h apr-1.5.0-patched/include/apr_network_io.h
+--- apr-1.5.0/include/apr_network_io.h	2013-11-12 08:26:22.000000000 -0600
++++ apr-1.5.0-patched/include/apr_network_io.h	2014-01-28 15:05:20.833442154 -0600
+@@ -519,6 +519,28 @@ APR_DECLARE(apr_status_t) apr_socket_sen
+                                            apr_int32_t nvec, apr_size_t *len);
+ 
+ /**
++ * Receive network data store it in multiple buffers.
++ * @param sock The socket to read the data from.
++ * @param vec The array of iovec structs for storing data
++ * @param nvec The number of iovec structs in the array
++ * @param len Receives the number of bytes actually read
++ * @remark
++ * <PRE>
++ * This functions acts like a blocking read by default.  To change
++ * this behavior, use apr_socket_timeout_set() or the APR_SO_NONBLOCK
++ * socket option.
++ * The number of bytes actually sent is stored in argument 4.
++ *
++ * It is possible for both bytes to be read and an error to be returned.
++ *
++ * APR_EINTR is never returned.
++ * </PRE>
++ */
++APR_DECLARE(apr_status_t) apr_socket_recvv(apr_socket_t *sock,
++                                           const struct iovec *vec,
++                                           apr_int32_t nvec, apr_size_t *len);
++
++/**
+  * @param sock The socket to send from
+  * @param where The apr_sockaddr_t describing where to send the data
+  * @param flags The flags to use
+diff -rupN apr-1.5.0/network_io/unix/sendrecv.c apr-1.5.0-patched/network_io/unix/sendrecv.c
+--- apr-1.5.0/network_io/unix/sendrecv.c	2013-10-21 06:57:36.000000000 -0500
++++ apr-1.5.0-patched/network_io/unix/sendrecv.c	2014-01-28 15:04:06.602373082 -0600
+@@ -203,11 +203,6 @@ apr_status_t apr_socket_sendv(apr_socket
+         requested_len += vec[i].iov_len;
+     }
+ 
+-    if (sock->options & APR_INCOMPLETE_WRITE) {
+-        sock->options &= ~APR_INCOMPLETE_WRITE;
+-        goto do_select;
+-    }
+-
+     do {
+         rv = writev(sock->socketdes, vec, nvec);
+     } while (rv == -1 && errno == EINTR);
+@@ -231,9 +226,6 @@ do_select:
+         *len = 0;
+         return errno;
+     }
+-    if ((sock->timeout > 0) && (rv < requested_len)) {
+-        sock->options |= APR_INCOMPLETE_WRITE;
+-    }
+     (*len) = rv;
+     return APR_SUCCESS;
+ #else
+@@ -242,6 +234,49 @@ do_select:
+ #endif
+ }
+ 
++apr_status_t apr_socket_recvv(apr_socket_t * sock, const struct iovec *vec,
++                              apr_int32_t nvec, apr_size_t *len)
++{
++#ifdef HAVE_WRITEV
++    apr_ssize_t rv;
++    apr_size_t requested_len = 0;
++    apr_int32_t i;
++
++    for (i = 0; i < nvec; i++) {
++        requested_len += vec[i].iov_len;
++    }
++
++    do {
++        rv = readv(sock->socketdes, vec, nvec);
++    } while (rv == -1 && errno == EINTR);
++
++    while ((rv == -1) && (errno == EAGAIN || errno == EWOULDBLOCK)
++                      && (sock->timeout > 0)) {
++        apr_status_t arv;
++do_select:
++        arv = apr_wait_for_io_or_timeout(NULL, sock, 1);
++        if (arv != APR_SUCCESS) {
++            *len = 0;
++            return arv;
++        }
++        else {
++            do {
++                rv = readv(sock->socketdes, vec, nvec);
++            } while (rv == -1 && errno == EINTR);
++        }
++    }
++    if (rv == -1) {
++        *len = 0;
++        return errno;
++    }
++    (*len) = rv;
++    return APR_SUCCESS;
++#else
++    *len = vec[0].iov_len;
++    return apr_socket_recv(sock, vec[0].iov_base, len);
++#endif
++}
++
+ #if APR_HAS_SENDFILE
+ 
+ /* TODO: Verify that all platforms handle the fd the same way,
+diff -rupN apr-1.5.0/network_io/win32/sendrecv.c apr-1.5.0-patched/network_io/win32/sendrecv.c
+--- apr-1.5.0/network_io/win32/sendrecv.c	2011-03-21 11:55:11.000000000 -0500
++++ apr-1.5.0-patched/network_io/win32/sendrecv.c	2014-01-28 15:03:35.262762929 -0600
+@@ -162,6 +162,74 @@ APR_DECLARE(apr_status_t) apr_socket_sen
+     return rc;
+ }
+ 
++APR_DECLARE(apr_status_t) apr_socket_recvv(apr_socket_t *sock,
++                                           const struct iovec *vec,
++                                           apr_int32_t in_vec, apr_size_t *nbytes)
++{
++    apr_status_t rc = APR_SUCCESS;
++    apr_ssize_t rv;
++    apr_size_t cur_len;
++    apr_int32_t nvec = 0;
++    int i, j = 0;
++    DWORD dwBytes = 0;
++    WSABUF *pWsaBuf;
++
++    for (i = 0; i < in_vec; i++) {
++        cur_len = vec[i].iov_len;
++        nvec++;
++        while (cur_len > APR_DWORD_MAX) {
++            nvec++;
++            cur_len -= APR_DWORD_MAX;
++        }
++    }
++
++    pWsaBuf = (nvec <= WSABUF_ON_STACK) ? _alloca(sizeof(WSABUF) * (nvec))
++                                         : malloc(sizeof(WSABUF) * (nvec));
++    if (!pWsaBuf)
++        return APR_ENOMEM;
++
++    for (i = 0; i < in_vec; i++) {
++        char * base = vec[i].iov_base;
++        cur_len = vec[i].iov_len;
++
++        do {
++            if (cur_len > APR_DWORD_MAX) {
++                pWsaBuf[j].buf = base;
++                pWsaBuf[j].len = APR_DWORD_MAX;
++                cur_len -= APR_DWORD_MAX;
++                base += APR_DWORD_MAX;
++            }
++            else {
++                pWsaBuf[j].buf = base;
++                pWsaBuf[j].len = (DWORD)cur_len;
++                cur_len = 0;
++            }
++            j++;
++
++        } while (cur_len > 0);
++    }
++#ifndef _WIN32_WCE
++    rv = WSARecv(sock->socketdes, pWsaBuf, nvec, &dwBytes, 0, NULL, NULL);
++    if (rv == SOCKET_ERROR) {
++        rc = apr_get_netos_error();
++    }
++#else
++    for (i = 0; i < nvec; i++) {
++        rv = recv(sock->socketdes, pWsaBuf[i].buf, pWsaBuf[i].len, 0);
++        if (rv == SOCKET_ERROR) {
++            rc = apr_get_netos_error();
++            break;
++        }
++        dwBytes += rv;
++    }
++#endif
++    if (nvec > WSABUF_ON_STACK)
++        free(pWsaBuf);
++
++    *nbytes = dwBytes;
++    return rc;
++}
++
+ 
+ APR_DECLARE(apr_status_t) apr_socket_sendto(apr_socket_t *sock,
+                                             apr_sockaddr_t *where,
