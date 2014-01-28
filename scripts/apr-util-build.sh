@@ -7,6 +7,9 @@ d=""
 
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
+#Apply the patch
+patch -p1 < ../../apr-util.patch
+
 ./configure --prefix=${PREFIX}${d} --with-apr=${PREFIX}${d} --enable-shared --enable-static
 make $MAKE_ARGS
 make $MAKE_ARGS test
