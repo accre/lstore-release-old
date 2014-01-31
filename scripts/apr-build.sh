@@ -9,7 +9,7 @@ d=""
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
 #Apply the patch
-patch -p1 < ../../apr.patch
+patch -p1 < ../../tarballs/apr.patch
 
 ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared
 make $MAKE_ARGS
