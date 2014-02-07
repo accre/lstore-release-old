@@ -7,6 +7,12 @@ d=""
 
 [ -e CMakeCache.txt ] && rm CMakeCache.txt
 
+if command -v cmake >/dev/null 2>&1; then
+    LFS_CMAKE_COMMAND=cmake
+else
+    LFS_CMAKE_COMMAND=cmake28
+fi
+
 CMAKE_PREFIX_PATH=${PREFIX}${d} \
-   cmake ${cmflags}  -D CMAKE_INSTALL_PREFIX=${PREFIX}${d} -D CMAKE_INCLUDE_CURRENT_DIR=on -D CMAKE_VERBOSE_MAKEFILE=on CMakeLists.txt
+   ${LFS_CMAKE_COMMAND} ${cmflags}  -D CMAKE_INSTALL_PREFIX=${PREFIX}${d} -D CMAKE_INCLUDE_CURRENT_DIR=on -D CMAKE_VERBOSE_MAKEFILE=on CMakeLists.txt
 
