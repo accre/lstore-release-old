@@ -15,11 +15,3 @@ for x in zlib openssl Jerasure apr apr-util zeromq czmq; do
    ./my-build.sh 2>&1 | tee ../../logs/${x}-build.log
    cd ..
 done
-
-
-
-
-
-
-
-
