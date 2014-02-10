@@ -1,6 +1,45 @@
+diff -rupN apr-1.5.0/configure apr-1.5.0-patched/configure
+--- apr-1.5.0/configure	2013-11-13 10:14:28.000000000 -0600
++++ apr-1.5.0-patched/configure	2014-02-07 17:18:35.180167071 -0600
+@@ -10305,7 +10305,7 @@ $as_echo "$ac_cv_ebcdic" >&6; }
+ 
+ 
+ 
+-APR_LIBNAME="apr${libsuffix}"
++APR_LIBNAME="apr-ACCRE${libsuffix}"
+ 
+ 
+ echo "performing libtool configuration..."
+@@ -28543,7 +28543,7 @@ esac
+ 
+ 
+ 
+-ac_config_files="$ac_config_files Makefile include/apr.h build/apr_rules.mk build/pkg/pkginfo apr-$APR_MAJOR_VERSION-config:apr-config.in apr.pc"
++ac_config_files="$ac_config_files Makefile include/apr.h build/apr_rules.mk build/pkg/pkginfo apr-ACCRE-$APR_MAJOR_VERSION-config:apr-config.in apr.pc"
+ 
+ 
+ if test -d $srcdir/test; then
+@@ -29553,7 +29553,7 @@ do
+     "include/apr.h") CONFIG_FILES="$CONFIG_FILES include/apr.h" ;;
+     "build/apr_rules.mk") CONFIG_FILES="$CONFIG_FILES build/apr_rules.mk" ;;
+     "build/pkg/pkginfo") CONFIG_FILES="$CONFIG_FILES build/pkg/pkginfo" ;;
+-    "apr-$APR_MAJOR_VERSION-config") CONFIG_FILES="$CONFIG_FILES apr-$APR_MAJOR_VERSION-config:apr-config.in" ;;
++    "apr-ACCRE-$APR_MAJOR_VERSION-config") CONFIG_FILES="$CONFIG_FILES apr-ACCRE-$APR_MAJOR_VERSION-config:apr-config.in" ;;
+     "apr.pc") CONFIG_FILES="$CONFIG_FILES apr.pc" ;;
+     "test/Makefile") CONFIG_FILES="$CONFIG_FILES test/Makefile" ;;
+     "test/internal/Makefile") CONFIG_FILES="$CONFIG_FILES test/internal/Makefile" ;;
+@@ -30756,7 +30756,7 @@ $as_echo "$as_me: $i is unchanged" >&6;}
+   fi
+   rm -f $i.save
+ done
+-chmod +x apr-$APR_MAJOR_VERSION-config
++chmod +x apr-ACCRE-$APR_MAJOR_VERSION-config
+  ;;
+ 
+   esac
 diff -rupN apr-1.5.0/include/apr_network_io.h apr-1.5.0-patched/include/apr_network_io.h
 --- apr-1.5.0/include/apr_network_io.h	2013-11-12 08:26:22.000000000 -0600
-+++ apr-1.5.0-patched/include/apr_network_io.h	2014-01-28 15:05:20.833442154 -0600
++++ apr-1.5.0-patched/include/apr_network_io.h	2014-02-07 17:17:58.562709455 -0600
 @@ -519,6 +519,28 @@ APR_DECLARE(apr_status_t) apr_socket_sen
                                             apr_int32_t nvec, apr_size_t *len);
  
@@ -30,9 +69,79 @@ diff -rupN apr-1.5.0/include/apr_network_io.h apr-1.5.0-patched/include/apr_netw
   * @param sock The socket to send from
   * @param where The apr_sockaddr_t describing where to send the data
   * @param flags The flags to use
+diff -rupN apr-1.5.0/Makefile.in apr-1.5.0-patched/Makefile.in
+--- apr-1.5.0/Makefile.in	2013-10-29 13:37:29.000000000 -0500
++++ apr-1.5.0-patched/Makefile.in	2014-02-07 17:18:35.100172625 -0600
+@@ -27,8 +27,8 @@ CLEAN_SUBDIRS= test
+ INSTALL_SUBDIRS=@INSTALL_SUBDIRS@
+ 
+ TARGET_LIB = lib@APR_LIBNAME@.la
+-APR_PCFILE = apr-$(APR_MAJOR_VERSION).pc
+-APR_CONFIG = apr-$(APR_MAJOR_VERSION)-config
++APR_PCFILE = apr-ACCRE-$(APR_MAJOR_VERSION).pc
++APR_CONFIG = apr-ACCRE-$(APR_MAJOR_VERSION)-config
+ INSTALL = @INSTALL@
+ INSTALL_DATA = @INSTALL_DATA@
+ 
+@@ -36,7 +36,7 @@ INSTALL_DATA = @INSTALL_DATA@
+ # Rules for building specific targets, starting with 'all' for
+ # building the entire package.
+ #
+-TARGETS = $(TARGET_LIB) include/private/apr_escape_test_char.h apr.exp apr-config.out build/apr_rules.out
++TARGETS = $(TARGET_LIB) include/private/apr_escape_test_char.h apr-ACCRE.exp apr-ACCRE-config.out build/apr_rules.out
+ 
+ LT_VERSION = @LT_VERSION@
+ 
+@@ -44,7 +44,7 @@ LT_VERSION = @LT_VERSION@
+ @INCLUDE_RULES@
+ @INCLUDE_OUTPUTS@
+ 
+-CLEAN_TARGETS = apr-config.out apr.exp exports.c export_vars.c .make.dirs \
++CLEAN_TARGETS = apr-ACCRE-config.out apr-ACCRE.exp exports.c export_vars.c .make.dirs \
+ 	build/apr_rules.out tools/gen_test_char@EXEEXT@ \
+ 	tools/gen_test_char.o tools/gen_test_char.lo \
+ 	include/private/apr_escape_test_char.h
+@@ -66,7 +66,7 @@ includedir=@includedir@
+ installbuilddir=@installbuilddir@
+ 
+ # Create apr-config script suitable for the install tree
+-apr-config.out: $(APR_CONFIG)
++apr-ACCRE-config.out: $(APR_CONFIG)
+ 	sed 's,^\(location=\).*$$,\1installed,' < $(APR_CONFIG) > $@
+ 
+ # Create apr_rules.mk suitable for the install tree
+@@ -81,7 +81,7 @@ install: $(TARGETS)
+ 	    $(INSTALL_DATA) $${f} $(DESTDIR)$(includedir); \
+ 	done
+ 	$(LIBTOOL) --mode=install $(INSTALL) -m 755 $(TARGET_LIB) $(DESTDIR)$(libdir)
+-	$(INSTALL_DATA) apr.exp $(DESTDIR)$(libdir)/apr.exp
++	$(INSTALL_DATA) apr-ACCRE.exp $(DESTDIR)$(libdir)/apr-ACCRE.exp
+ 	$(INSTALL_DATA) apr.pc $(DESTDIR)$(libdir)/pkgconfig/$(APR_PCFILE)
+ 	for f in libtool shlibtool; do \
+ 	    if test -f $${f}; then $(INSTALL) -m 755 $${f} $(DESTDIR)$(installbuilddir); fi; \
+@@ -90,8 +90,8 @@ install: $(TARGETS)
+ 	for f in make_exports.awk make_var_export.awk; do \
+ 	    $(INSTALL_DATA) $(top_srcdir)/build/$${f} $(DESTDIR)$(installbuilddir); \
+ 	done
+-	$(INSTALL_DATA) build/apr_rules.out $(DESTDIR)$(installbuilddir)/apr_rules.mk
+-	$(INSTALL) -m 755 apr-config.out $(DESTDIR)$(bindir)/$(APR_CONFIG)
++	$(INSTALL_DATA) build/apr_rules.out $(DESTDIR)$(installbuilddir)/apr-ACCRE_rules.mk
++	$(INSTALL) -m 755 apr-ACCRE-config.out $(DESTDIR)$(bindir)/$(APR_CONFIG)
+ 	@if [ $(INSTALL_SUBDIRS) != "none" ]; then \
+             for i in $(INSTALL_SUBDIRS); do \
+ 	        ( cd $$i ; $(MAKE) DESTDIR=$(DESTDIR) install ); \
+@@ -109,7 +109,7 @@ exports.c: $(HEADERS)
+ export_vars.c: $(HEADERS)
+ 	$(APR_MKVAREXPORT) $(HEADERS) > $@
+ 
+-apr.exp: exports.c export_vars.c
++apr-ACCRE.exp: exports.c export_vars.c
+ 	@echo "#! lib@APR_LIBNAME@.so" > $@
+ 	@echo "* This file was AUTOGENERATED at build time." >> $@
+ 	@echo "* Please do not edit by hand." >> $@
 diff -rupN apr-1.5.0/network_io/unix/sendrecv.c apr-1.5.0-patched/network_io/unix/sendrecv.c
 --- apr-1.5.0/network_io/unix/sendrecv.c	2013-10-21 06:57:36.000000000 -0500
-+++ apr-1.5.0-patched/network_io/unix/sendrecv.c	2014-01-28 15:04:06.602373082 -0600
++++ apr-1.5.0-patched/network_io/unix/sendrecv.c	2014-02-07 17:17:58.762695569 -0600
 @@ -203,11 +203,6 @@ apr_status_t apr_socket_sendv(apr_socket
          requested_len += vec[i].iov_len;
      }
@@ -107,7 +216,7 @@ diff -rupN apr-1.5.0/network_io/unix/sendrecv.c apr-1.5.0-patched/network_io/uni
  /* TODO: Verify that all platforms handle the fd the same way,
 diff -rupN apr-1.5.0/network_io/win32/sendrecv.c apr-1.5.0-patched/network_io/win32/sendrecv.c
 --- apr-1.5.0/network_io/win32/sendrecv.c	2011-03-21 11:55:11.000000000 -0500
-+++ apr-1.5.0-patched/network_io/win32/sendrecv.c	2014-01-28 15:03:35.262762929 -0600
++++ apr-1.5.0-patched/network_io/win32/sendrecv.c	2014-02-07 17:17:58.870688070 -0600
 @@ -162,6 +162,74 @@ APR_DECLARE(apr_status_t) apr_socket_sen
      return rc;
  }

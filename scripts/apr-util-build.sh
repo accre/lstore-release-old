@@ -10,7 +10,7 @@ d=""
 #Apply the patch
 patch -p1 < ../../apr-util.patch
 
-./configure --prefix=${PREFIX}${d} --with-apr=${PREFIX}${d} --enable-shared --enable-static
+./configure --prefix=${PREFIX}${d} --with-apr=${PREFIX}${d}/bin/apr-ACCRE-1-config
 make $MAKE_ARGS
 make $MAKE_ARGS test
 make $MAKE_ARGS install
