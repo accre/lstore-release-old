@@ -8,7 +8,7 @@ d=""
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
 #Apply the patch
-patch -p1 < ../../apr-util.patch
+patch -p1 < ../../tarballs/apr-util.patch
 
 ./configure --prefix=${PREFIX}${d} --with-apr=${PREFIX}${d}/bin/apr-ACCRE-1-config
 make $MAKE_ARGS
