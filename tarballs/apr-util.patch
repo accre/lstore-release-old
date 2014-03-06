@@ -1,6 +1,6 @@
 diff -rupN apr-util-1.5.3/configure apr-util-1.5.3-patched/configure
 --- apr-util-1.5.3/configure	2013-11-13 10:41:32.000000000 -0600
-+++ apr-util-1.5.3-patched/configure	2014-02-07 18:15:12.656583404 -0600
++++ apr-util-1.5.3-patched/configure	2014-03-06 09:37:07.033401613 -0600
 @@ -24237,7 +24237,7 @@ lib_target=$APR_LIB_TARGET
  
  
@@ -10,6 +10,19 @@ diff -rupN apr-util-1.5.3/configure apr-util-1.5.3-patched/configure
  
  
  # Set up destination directory for DSOs.
+@@ -24305,10 +24305,10 @@ case $host in
+     *-mingw*)
+         sed -e 's/-DAPR_DECLARE_EXPORT/-DAPU_DECLARE_EXPORT/' \
+             -e 's/-DAPR_DECLARE_STATIC/-DAPU_DECLARE_STATIC -DAPR_DECLARE_STATIC/' \
+-            < $APR_BUILD_DIR/apr_rules.mk > $abs_builddir/build/rules.mk
++            < $APR_BUILD_DIR/apr-ACCRE_rules.mk > $abs_builddir/build/rules.mk
+         ;;
+     *)
+-        cp $APR_BUILD_DIR/apr_rules.mk $abs_builddir/build/rules.mk
++        cp $APR_BUILD_DIR/apr-ACCRE_rules.mk $abs_builddir/build/rules.mk
+         ;;
+ esac
+ 
 @@ -24335,7 +24335,7 @@ for d in include include/private; do
      test -d $top_builddir/$d || mkdir $top_builddir/$d
  done
@@ -39,7 +52,7 @@ diff -rupN apr-util-1.5.3/configure apr-util-1.5.3-patched/configure
    esac
 diff -rupN apr-util-1.5.3/Makefile.in apr-util-1.5.3-patched/Makefile.in
 --- apr-util-1.5.3/Makefile.in	2008-11-21 00:30:43.000000000 -0600
-+++ apr-util-1.5.3-patched/Makefile.in	2014-02-07 18:10:13.337360987 -0600
++++ apr-util-1.5.3-patched/Makefile.in	2014-03-06 09:37:07.040605000 -0600
 @@ -17,8 +17,8 @@ APRUTIL_LIBS = @APRUTIL_LIBS@
  TARGET_LIB = lib@APRUTIL_LIBNAME@.la
  INSTALL_SUBDIRS = @APR_ICONV_DIR@ @APR_XML_DIR@
@@ -100,7 +113,7 @@ diff -rupN apr-util-1.5.3/Makefile.in apr-util-1.5.3-patched/Makefile.in
  	@echo "* Please do not edit by hand." >> $@
 diff -rupN apr-util-1.5.3/misc/apr_thread_pool.c apr-util-1.5.3-patched/misc/apr_thread_pool.c
 --- apr-util-1.5.3/misc/apr_thread_pool.c	2013-03-24 02:56:46.000000000 -0500
-+++ apr-util-1.5.3-patched/misc/apr_thread_pool.c	2014-02-07 18:07:53.583066855 -0600
++++ apr-util-1.5.3-patched/misc/apr_thread_pool.c	2014-03-06 09:37:33.567272000 -0600
 @@ -67,6 +67,7 @@ struct apr_thread_pool
      volatile apr_size_t tasks_high;
      volatile apr_size_t thd_high;
