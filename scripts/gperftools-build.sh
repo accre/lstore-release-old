@@ -8,6 +8,7 @@ d=""
 
 [ "${PREFIX}" == "" ] && PREFIX=/usr/local
 
-./configure --prefix=${PREFIX}${d}
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX/lib
+LDFLAGS="-L$PREFIX" LIBS="-lunwind" CPPFLAGS="-I$PREFIX" ./configure --prefix=${PREFIX}${d}
 make $MAKE_ARGS
 make $MAKE_ARGS install

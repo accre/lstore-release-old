@@ -10,6 +10,10 @@ d=""
 
 #Apply the patch
 patch -p1 < ../../tarballs/apr.patch
+if [[ $? -ne 0 ]]; then
+    echo "Patch failed"
+    exit 1
+fi
 
 ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared
 make $MAKE_ARGS

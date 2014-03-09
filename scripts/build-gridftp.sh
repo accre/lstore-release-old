@@ -6,7 +6,7 @@
 cd build
 [[ -d gridftp-lfs ]] || git clone https://github.com/PerilousApricot/gridftp-lfs.git
 cd gridftp-lfs
-./configure --with-lio=${1} --prefix=${1}
+cmake28 .
 make
 make install
 

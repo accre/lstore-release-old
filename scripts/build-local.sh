@@ -17,7 +17,7 @@ for p in toolbox gop ibp lio; do
   if [ ! -d ${p} ] ; then
      if [ "${from}" == "git" ]; then
         echo "Checking out repository.  May be asked for password..."
-        git clone https://${user}@redmine.accre.vanderbilt.edu/git/${p}.git
+        GIT_SSL_NO_VERIFY=true git clone https://${user}@redmine.accre.vanderbilt.edu/git/${p}.git
      else
         tar -zxvf ../tarballs/${p}.tgz
      fi
@@ -27,10 +27,3 @@ for p in toolbox gop ibp lio; do
   ../../scripts/my-build.sh 2>&1 | tee ../../logs/${p}-build.log
   cd ..
 done
-
-
-
-
-
-
-

@@ -7,10 +7,10 @@ d=""
 
 [ -e CMakeCache.txt ] && rm CMakeCache.txt
 
-if command -v cmake >/dev/null 2>&1; then
-    LFS_CMAKE_COMMAND=cmake
-else
+if command -v cmake28 >/dev/null 2>&1; then
     LFS_CMAKE_COMMAND=cmake28
+else
+    LFS_CMAKE_COMMAND=cmake
 fi
 
 CMAKE_PREFIX_PATH=${PREFIX}${d} \

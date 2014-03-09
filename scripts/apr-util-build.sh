@@ -9,7 +9,10 @@ d=""
 
 #Apply the patch
 patch -p1 < ../../tarballs/apr-util.patch
-
+if [[ $? -ne 0 ]]; then
+    echo "Patch failed"
+    exit 1
+fi
 ./configure --prefix=${PREFIX}${d} --with-apr=${PREFIX}${d}/bin/apr-ACCRE-1-config
 make $MAKE_ARGS
 make $MAKE_ARGS test
