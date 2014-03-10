@@ -12,4 +12,4 @@ d=""
 cat ../../scripts/bootstrap | sed -e "s|PREFIX=/usr/local|PREFIX=${PREFIX}|" > bootstrap
 chmod +x bootstrap
 
-./bootstrap && make $MAKE_ARGS && make $MAKE_ARGS install
+./bootstrap && make $MAKE_ARGS && make $MAKE_ARGS install && make package
