@@ -22,7 +22,5 @@ fi
 
 ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared && \
 make $MAKE_ARGS && \
-# takes forever
-# make $MAKE_ARGS test && \
+make $MAKE_ARGS test && \
 make $MAKE_ARGS install
-
