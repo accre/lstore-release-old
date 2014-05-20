@@ -11,12 +11,16 @@ d=""
 #Apply the patch
 patch -p1 < ../../tarballs/apr.patch
 if [[ $? -ne 0 ]]; then
-    echo "Patch failed"
-    exit 1
+    grep apr-ACCRE configure >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        echo "Patch failed, but it might've been applied before, ignoring."
+    else
+        echo "Patch failed"
+        exit 1
+    fi
 fi
 
-./configure --prefix=${PREFIX}${d} --enable-static --enable-shared
-make $MAKE_ARGS
-make $MAKE_ARGS test
+./configure --prefix=${PREFIX}${d} --enable-static --enable-shared && \
+make $MAKE_ARGS && \
+make $MAKE_ARGS test && \
 make $MAKE_ARGS install
-
