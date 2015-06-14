@@ -15,7 +15,7 @@ for p in toolbox gop ibp lio; do
   if [ ! -d ${p} ] ; then
      if [ "${from}" == "git" ]; then
         echo "Checking out repository.  May be asked for password..."
-        git clone git@github.com:accre/lstore-${p}.git
+        git clone git@github.com:accre/lstore-${p}.git ${p}
      else
         tar -zxvf ../tarballs/${p}.tgz
      fi
