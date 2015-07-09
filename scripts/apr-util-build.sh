@@ -35,7 +35,7 @@ if [ "${PKG}" == "" ]; then  #Just building if undefined
        fi
    fi
 
-   ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared --includedir=${PREFIX}${d}/include/apr-ACCRE-1 --with-apr=${PREFIX}${d} && \
+   ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared --includedir=${PREFIX}${d}/include/apr-ACCRE-1 --with-apr=${PREFIX}${d}/bin/apr-ACCRE-1-config && \
    make $MAKE_ARGS && \
    make $MAKE_ARGS test && \
    make $MAKE_ARGS install
