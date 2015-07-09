@@ -35,6 +35,11 @@ if [ "${PKG}" == "" ]; then  #Just building if undefined
        fi
    fi
 
+# Force sequential make build for this module. The make task dependencies are not fully defined so there are
+# out-of-order task completion race conditions that lead to errors when built in parallel.
+# (at least as of 2015 July 9 on my 4-core AMD w/ -j 10 --MFH)
+MAKE_ARGS="$(sed 's/-j [0-9]*/-j 1/' <<<$MAKE_ARGS)"
+
    ./configure --prefix=${PREFIX}${d} --enable-static --enable-shared --includedir=${PREFIX}${d}/include/apr-ACCRE-1 && \
    make $MAKE_ARGS && \
    make $MAKE_ARGS test && \
